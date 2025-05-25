@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">Prediction Result</h1>
+        <div class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <p class="text-lg"><strong>Predicted Class:</strong> {{ predicted_class }}</p>
+                <p class="text-lg"><strong>Confidence:</strong> {{ confidence|round(2) }}</p>
+                <h2 class="text-lg font-semibold mt-4">Confidence Scores:</h2>
+                <ul class="list-disc pl-5">
+                    {% for class_name, score in class_confidence_pairs %}
+                        <li>{{ class_name }}: {{ score|round(2) }}</li>
+                    {% endfor %}
+                </ul>
+                <div class="mt-4">
+                    {% if chart_path %}
+                        <img src="{{ url_for('static', filename='prediction_chart.png') }}" alt="Confidence Chart" class="w-full rounded">
+                    {% else %}
+                        <p class="text-red-500">Unable to generate confidence chart.</p>
+                    {% endif %}
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    <a href="/download_prediction" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Download Prediction</a>
+                    <a href="/" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Back to Home</a>
+                </div>
+            </div>
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold mb-2">Uploaded Image:</h2>
+                <img src="data:image/jpeg;base64,{{ image_base64 }}" alt="Uploaded Image" class="w-full rounded">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

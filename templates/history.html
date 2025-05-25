@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-4 text-center">Prediction History</h1>
+        <div class="flex justify-between mb-4">
+            <a href="/" class="text-blue-500 hover:underline">Back to Home</a>
+            <form action="/clear_history" method="post">
+                <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Clear History</button>
+            </form>
+        </div>
+        {% if history %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for entry in history %}
+                    <div class="border p-4 rounded-lg">
+                        <img src="data:image/jpeg;base64,{{ entry.image_base64 }}" alt="Image" class="w-full h-48 object-cover rounded mb-2">
+                        <p><strong>Predicted Class:</strong> {{ entry.predicted_class }}</p>
+                        <p><strong>Confidence:</strong> {{ entry.confidence|round(2) }}</p>
+                        <p><strong>Timestamp:</strong> {{ entry.timestamp }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-500">No predictions yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
